@@ -116,6 +116,7 @@ function makeResponsive() {
                 .text((c, i) => c.abbr)
                 .attr("x", (a, i) => xScale(a.poverty))
                 .attr("y", b => yScale(b.healthcare))
+                .attr("pointer-events", "none")
                 .attr("dx", 0)
                 .attr("dy", 3)
                 .style("font-size","10px")
@@ -130,7 +131,7 @@ function makeResponsive() {
             var tooltipXPos =  parseInt(d3.select(this).attr("cx")) +80;
             var tooltipYPos = parseInt(d3.select(this).attr("cy")) +10;
 
-
+            d3.select(this).classed("circleHover", true);
             toolTip.style("display", "block")
             toolTip.html(`${d.state}</br><strong>Healthcare: ${d.healthcare}%</strong></br>
             Poverty: <strong>${d.poverty}%</strong>`)
@@ -142,7 +143,8 @@ function makeResponsive() {
 
         //Create "mouseout" event listener to hide tooltip
         .on("mouseout", function() {
-        toolTip.style("display", "none");
+            d3.select(this).classed("circleHover", false);
+            toolTip.style("display", "none");
         });
     });
 
