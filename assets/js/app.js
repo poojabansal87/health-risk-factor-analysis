@@ -27,7 +27,7 @@ function makeResponsive() {
     var margin = {
     top: 50,
     right: 50,
-    bottom: 50,
+    bottom: 75,
     left: 50
     };
 
@@ -47,6 +47,7 @@ function makeResponsive() {
 
     d3.csv("./assets/data/data.csv").then(function(healthRiskData) {
        
+        var tempD = healthRiskData;
         // Format the data
         healthRiskData.forEach(function(data) {
             data.poverty = +data.poverty;
@@ -79,6 +80,25 @@ function makeResponsive() {
         chartGroup.append("g")
             .call(yAxis);
 
+
+        // text label for the x axis
+          svg.append("text")             
+          .attr("transform",
+                "translate(" + (chartWidth/2) + " ," + 
+                               (chartHeight + margin.top + 40) + ")")
+          .style("text-anchor", "middle")
+          .style("font-weight","bold")
+          .text("Poverty %");
+
+        // text label for the y axis
+        svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", margin.left-40)
+          .attr("x", 0 - (chartHeight / 2))
+          .style("text-anchor", "middle")
+          .style("font-weight","bold")
+          .text("Healthcare %");    
+
         // append circles to data points
         var circlesGroup = chartGroup.selectAll("circle")
         .data(healthRiskData)
@@ -88,14 +108,18 @@ function makeResponsive() {
         .attr("cy", d => yScale(d.healthcare))
         .attr("r", "10")
         .attr("class","stateCircle");
-
-        // chartGroup.append("text")
-        // .data(healthRiskData)
-        //                   .attr("x", (d, i) => xScale(d.poverty))
-        //                   .attr("y", d => yScale(d.healthcare))
-        //                   .attr("dx",10)
-        //                   .text("A")
-        //                   .style("color","white");
+        
+        chartGroup.selectAll("text.stateText")
+                .data(healthRiskData)
+                .enter()
+                .append("text")
+                .text((c, i) => c.abbr)
+                .attr("x", (a, i) => xScale(a.poverty))
+                .attr("y", b => yScale(b.healthcare))
+                .attr("dx", 0)
+                .attr("dy", 3)
+                .style("font-size","10px")
+                .attr("class","stateText");
          
         //Append tooltip div
         var toolTip = d3.select("#scatter").append("div")
@@ -103,11 +127,17 @@ function makeResponsive() {
 
         //Create "mouseover" event listener to display tooltip
         circlesGroup.on("mouseover", function(d, i) {
-            toolTip.style("display", "block");
+            var tooltipXPos =  parseInt(d3.select(this).attr("cx")) +80;
+            var tooltipYPos = parseInt(d3.select(this).attr("cy")) +10;
+
+
+            toolTip.style("display", "block")
             toolTip.html(`${d.state}</br><strong>Healthcare: ${d.healthcare}%</strong></br>
             Poverty: <strong>${d.poverty}%</strong>`)
-            .style("left", d3.event.pageX + "px")
-            .style("top", d3.event.pageY + "px");
+            .style("left",tooltipXPos+"px")
+            .style("top", tooltipYPos + "px")
+            .style("position", "absolute");
+
         })
 
         //Create "mouseout" event listener to hide tooltip
