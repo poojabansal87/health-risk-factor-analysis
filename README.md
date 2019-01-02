@@ -22,7 +22,5 @@ The visualiztions, created using D3, will help with analyzing the current trends
 
 * Added tooltips to circles and displayed each tooltip with the data that the user has selected. Thanks to the `d3-tip.js` plugin developed by [Justin Palmer](https://github.com/Caged).
 
-![8-tooltip](Images/8-tooltip.gif)
-
 * Note: You'll need to use `python -m http.server` to run the visualization. This will host the page at `localhost:8000` in your web browser.
 
