@@ -26,8 +26,3 @@ The visualiztions, created using D3, will help with analyzing the current trends
 
 * Note: You'll need to use `python -m http.server` to run the visualization. This will host the page at `localhost:8000` in your web browser.
 
-- - -
-
-* Check out [David Gotz's example](https://bl.ocks.org/davegotz/bd54b56723c154d25eedde6504d30ad7) to see how you should implement tooltips with d3-tip.
-
-- - -
